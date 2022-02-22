@@ -1,52 +1,54 @@
+
+
 import 'dart:convert';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:foodybite_app/screens/recept-code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../pallete.dart';
 import '../widgets/background-image.dart';
-import '../widgets/rounded-button.dart';
-import '../widgets/text-field-input.dart';
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 
-class ForgotPassword extends StatefulWidget {
+class Code_Recept extends StatefulWidget  {
   @override
-  State<ForgotPassword> createState() => _ForgotPasswordState();
+  State<Code_Recept> createState() => _Code_Recept();
+
+
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
-
-  TextEditingController e_mail=TextEditingController();
-  Future <void> post_mail() async {
+class _Code_Recept extends State<Code_Recept> {
+  late String email;
+  TextEditingController code=TextEditingController();
+  Future checkcode()async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-  var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/forgot_password'));
+    email=prefs.getString('email_code')!;
+    print(email);
+  var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/check_code'));
   request.fields.addAll({
-  'email': e_mail.text
+  'email': email,
+  'code': code.text
   });
   http.StreamedResponse response = await request.send();
+  if (response.statusCode == 200) {
+
     var s=await response.stream.bytesToString();
-    Map<String, dynamic> data1 = json.decode(s);
-    if(data1['Reponse']=='Received'){
-      prefs.setString('email_code',e_mail.text);
-          Navigator.pushNamed(context, 'code');
+    Map<String, dynamic> data1 =json.decode(s);
+  if(data1['Reponse']=='True'){
+      print('success');
+      prefs.setString('code',code.text);
+
+      Navigator.pushNamed(context, 'pass');
       }
-  else{
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.WARNING,
-      animType: AnimType.BOTTOMSLIDE,
-      title:'Error Connection' ,
-      desc: data1['Reponse'],
-      btnOkOnPress: () {},
-    )..show();
-  }
-  }
 
-
-
-    @override
+    else {
+      print('error');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Code!!!!"),
+      ));
+    }
+  }}
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Stack(
@@ -67,7 +69,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             ),
             title: Text(
-              'Forgot Password',
+              'Verif Code',
               style: kBodyText,
             ),
             centerTitle: true,
@@ -83,25 +85,25 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     Container(
                       width: size.width * 0.8,
                       child: Text(
-                        'Enter your email we will send instruction to reset your password',
+                        'Please check that verification code ',
                         style: kBodyText,
                       ),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                   Container(
+                Container(
                   width:350,
                   child:
                     TextField(
-                      controller: e_mail,
+                      controller: code,
 
 
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.grey.shade100,
-                        prefixIcon: Icon(Icons.mail),
-                        labelText: 'mail',
+                        prefixIcon: Icon(Icons.verified_user_rounded),
+                        labelText: 'code',
 
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -113,14 +115,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       height: 20,
                     ),
                     ElevatedButton(
-                      onPressed: ()=>{post_mail(),
-                     },
+                      onPressed: ()=>checkcode(),
                       style: ElevatedButton.styleFrom(
                           fixedSize: const Size(210,65),
                           textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                           primary: Colors.blue),
-                      child: const Text('Send'),
+                      child: const Text('Check'),
                     ),
+                    SizedBox(
+                      height:20,
+                    ),
+
                   ],
                 ),
               )
@@ -131,3 +136,4 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 }
+
