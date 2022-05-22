@@ -36,11 +36,7 @@ Future conx(String  mail, pass) async {
     Map<String, dynamic> data1 = json.decode(s);
     if(data1['Reponse']=='Success'){
       List data2 = json.decode(data1['user']);
-      
         setState(() {
-
-          if(data2[0]['fields']['statutUser']=='Activated'){
-
 
             long =data2.length;
             id = data2[0]['pk'];
@@ -52,7 +48,7 @@ Future conx(String  mail, pass) async {
             print(data2[0]['fields']['email']);
             Navigator.pushReplacementNamed(context, 'Home1');
 
-          }
+
         });
 
     }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodybite_app/class/conference.dart';
+import 'package:foodybite_app/screens/more-information.dart';
 import 'package:foodybite_app/screens/participation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,15 +38,16 @@ class _MyAppState extends State<Details> {
       if(data1['Reponse']=='Success'){
         List data2 = json.decode(data1['Conference']);
         if(mounted){
-        setState(() {
-          long =data2.length;
+          setState(() {
+            long=data2.length;
             var id = data2[0]['pk'];
             var fields = json.encode(data2[0]['fields']);
             Conference conferance = new Conference(id, fields);
             listConferences.add(conferance);
-             isLoading = false;
+            isLoading = false;
 
-        });}
+          });
+        }
       }
       else{
         AwesomeDialog(
@@ -100,28 +102,6 @@ class _MyAppState extends State<Details> {
         }
       });
     }
-  }
-
-
-  Future participation(String idconf) async{
-    final prefs = await SharedPreferences.getInstance();
-    String? iduser = await prefs.getString('iduser');
-    var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien//Insert_Participant'));
-    request.fields.addAll({
-      'idUser': iduser.toString(),
-      'idConference':idconf
-    });
-
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    }
-    else {
-      print(response.reasonPhrase);
-    }
-
   }
   Future getstatuefavorite() async {
     final prefs = await SharedPreferences.getInstance();
@@ -613,6 +593,35 @@ Future sendparticipantcoor( String idconf) async{
                         )
 
                     ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(100, 201, 56, 0.7019607843137254),
+                            Color.fromRGBO(215, 197, 33, 1.0),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2,12,30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child:ListTile(
+                        title: Text("See More",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                       onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Moreinformations(id: widget.id)),);
+                        },
+
+                      ),),
                   ],
                 );
               }

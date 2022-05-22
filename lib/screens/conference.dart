@@ -136,12 +136,7 @@ class ConferencesPageState extends State<ConferencesPage>{
       getData();
       GetAll_Gallery();
     });
-    Timer.periodic(Duration(seconds : 22), (Timer t) async{
-      double max=_scrollController.position.maxScrollExtent;
-      double min=_scrollController.position.minScrollExtent;
-      await _scrollController.animateTo(max==null?0.0:max, curve: Curves.easeInOut, duration: const Duration(seconds : 10),);
-      await _scrollController.animateTo(min==null?0.0:min, curve: Curves.easeInOut, duration: const Duration(seconds : 10),);
-    });
+
     super.initState();
   }
 

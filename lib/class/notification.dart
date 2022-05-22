@@ -8,13 +8,13 @@ late String Body;
 Notif(int id,String fields) {
   var data2 = json.decode(fields);
   this.id = id;
-  this.Subject = data2['titleNotificaion'];
-  this.Body = data2['bodyNotificaion'];
+  this.Subject = data2['titleNotification'];
+  this.Body = data2['bodyNotification'];
 }
 toJson() => {
 'pk':id,
-'titleNotificaion': Subject,
-'bodyNotificaion': Body,
+'titleNotification': Subject,
+'bodyNotification': Body,
 
 
 };

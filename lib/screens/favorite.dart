@@ -34,7 +34,7 @@ class _FavoriteState extends State<Favorite> {
       var s=await response.stream.bytesToString();
       Map<String, dynamic> data1 = json.decode(s);
       if(data1['Reponse']=='Success'){
-        List data2 = json.decode(data1['Favorite']);
+        List data2 = json.decode(data1['Favorites']);
         if(mounted){
           setState(() {
             long=data2.length;
@@ -86,7 +86,6 @@ class _FavoriteState extends State<Favorite> {
         List data2 = json.decode(data1['Conference']);
         if(mounted){
           setState(() {
-
             var id = data2[0]['pk'];
             var fields = json.encode(data2[0]['fields']);
             Conference conferance = new Conference(id, fields);

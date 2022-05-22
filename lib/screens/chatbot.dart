@@ -36,17 +36,15 @@ class _NotifPageState extends State<NotifPage> {
       'idUser': iduser.toString()
     });
 
-
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       var s=await response.stream.bytesToString();
       Map<String, dynamic> data1 = json.decode(s);
       if(data1['Reponse']=='Success'){
-
         List data2 = json.decode(data1['Notifications']);
         if(mounted){
           setState(() {
-             long =data2.length;
+            long =data2.length;
             for(int i=0;i<long;i++) {
               var id = data2[i]['pk'];
               var fields = json.encode(data2[i]['fields']);
@@ -82,6 +80,7 @@ class _NotifPageState extends State<NotifPage> {
       )..show();
     }
   }
+
   showLoaderDialog(BuildContext context){
     AlertDialog alert=AlertDialog(
       content: new Row(
@@ -98,21 +97,21 @@ class _NotifPageState extends State<NotifPage> {
     );
   }
 
-  deletenotif(int id) async{
+  deletenotif(int index) async{
     var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/Delete_Notification'));
     request.fields.addAll({
-      'idNotification': id.toString()
+      'idNotification': listnotif[index].id.toString()
     });
-
-
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
       var s=await response.stream.bytesToString();
       Map<String, dynamic> data1 = json.decode(s);
       if(data1['Reponse']=='Success'){
-
+        setState(() {
+          print('Success');
+          listnotif.remove(index);
+        });
 
       }
     }
@@ -122,14 +121,10 @@ class _NotifPageState extends State<NotifPage> {
 
 
   }
-  void initState() {
-    setState(() {
 
-      getnotif();
-    });}
   @override
   Widget build(BuildContext context) {
-
+    getnotif();
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -137,7 +132,8 @@ class _NotifPageState extends State<NotifPage> {
         ],
         title: Text('Notifications',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(70, 106, 226, 1.0) ,
+        backgroundColor:   Color.fromRGBO(19,37,94, 1),
+
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -200,7 +196,7 @@ class _NotifPageState extends State<NotifPage> {
                   ],
                 ),
                 child:ListTile(
-                  trailing: IconButton(onPressed:(){deletenotif(listnotif[index].id);}, icon: Icon(Icons.delete)),
+                  trailing: IconButton(onPressed:(){deletenotif(index);}, icon: Icon(Icons.delete)),
                   title: Text(listnotif[index].Subject.toString(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                   subtitle: Text('Reply: ${listnotif[index].Body}',style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),),
 
