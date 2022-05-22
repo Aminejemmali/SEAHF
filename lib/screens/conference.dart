@@ -152,7 +152,7 @@ class ConferencesPageState extends State<ConferencesPage>{
         ],
         title: Text('Conferences',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(19,37,94, 1) ,
+        backgroundColor: Color.fromRGBO(32, 189, 154, 1.0) ,
       ),
 
 
@@ -164,8 +164,8 @@ class ConferencesPageState extends State<ConferencesPage>{
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
-                Color.fromRGBO(19,37,94, 1),
-                Color.fromRGBO(83,104,157, 1),
+                Color.fromRGBO(226, 223, 196, 1.0),
+                Color.fromRGBO(154, 186, 229, 1.0),
               ],
             ),
           ),
@@ -219,8 +219,8 @@ class ConferencesPageState extends State<ConferencesPage>{
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                             colors: [
-                              Color.fromRGBO(119,148,225, 0.7),
-                              Color.fromRGBO(119,148,225, 1),
+                              Color.fromRGBO(64, 93, 238, 0.7019607843137254),
+                              Color.fromRGBO(120, 153, 238, 1.0),
                             ],
                           ),
                           borderRadius: BorderRadius.circular(30),

@@ -13,131 +13,26 @@ import 'package:flutter_loading/flutter_loading.dart';
 
 
 
-class Profil extends StatefulWidget {
-  String id,name,mail,pass,date,add,city,country,phone;
-  Profil({ Key? key,required this.id,
-  required this.name,required this.mail,
-    required this.pass,
-    required this.date,
-    required this.add,
-
-    required this.city,
-    required this.country,
-    required this.phone,
-  }) : super(key: key);
+class Payment extends StatefulWidget {
 
 
-  State<Profil> createState() => _AccountUpdateState();
+  State<Payment> createState() => _AccountUpdateState();
 }
-class _AccountUpdateState extends State<Profil> {
-  late TextEditingController name=TextEditingController()..text=widget.name;
-  late TextEditingController mail=TextEditingController()..text=widget.mail;
-  late TextEditingController pass=TextEditingController()..text=widget.pass;
-  late TextEditingController date=TextEditingController()..text=widget.date;
-  late TextEditingController addresse=TextEditingController()..text=widget.add;
-  late TextEditingController city=TextEditingController()..text=widget.city;
-  late TextEditingController country=TextEditingController()..text=widget.country;
-  late TextEditingController phone=TextEditingController()..text=widget.phone;
+class _AccountUpdateState extends State<Payment> {
 
   late File image;
   Path? path;
-
   bool show=true;
   bool valid=false;
   int long =0;
 
   bool isLoading = true;
-  Future getImage()async{
-    final pickedFile = await ImagePicker.pickImage(source: ImageSource.gallery , imageQuality: 80);
-
-      print(pickedFile.path);
-      if(mounted){
-      setState(() {
-        image = File(pickedFile.path);
-        valid=true;
-      });}
-    }
 
 
-  Future <void> update(  ) async {
-  var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/Update_User'));
-  request.fields.addAll({
-    'idUser': widget.id,
-    'username': name.text,
-    'email': mail.text,
-    'password': pass.text,
-    'dateBirth': date.text,
-    'address01': addresse.text,
-    'city': city.text,
-    'country': country.text,
-    'phone': phone.text,
-    'statutUser':"Activaded²"
-  });
-  request.files.add(await http.MultipartFile.fromPath('photoProfile',image.path));
-  http.StreamedResponse response = await request.send();
-  if (response.statusCode == 200) {
-  print(await response.stream.bytesToString());
-  var s=await response.stream.bytesToString();
-  Map<String, dynamic> data1 = json.decode(s);
-  if(data1['Reponse']=='success'){
-    Navigator.pushNamed(context, 'Profilview');
-    print('success');
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("success"),));
-  }
-
-  else {
-  print('erreur');
-  }
-  }}
-  List<User> listUser=[];
-  Future<Null> getData() async {
-    var request = http.MultipartRequest('POST',
-        Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/Get_User'));
-    request.fields.addAll({
-      'idUser': widget.id
-    });
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      var s=await response.stream.bytesToString();
-      Map<String, dynamic> data1 = json.decode(s);
-      if(data1['Reponse']=='Success'){
-        print('111');
-        List data2 = json.decode(data1['User']);
-        if (this.mounted){
-          setState(() {
-            long = data2.length;
-            var id = data2[0]['pk'];
-            var fields = json.encode(data2[0]['fields']);
-            User user = new User(id, fields);
-            listUser.add(user);
-             isLoading = false;
 
 
-          });}
-      }
-      else{
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.WARNING,
-          animType: AnimType.BOTTOMSLIDE,
-          title:'Error Connection' ,
-          desc: data1['Reponse'],
-          btnOkOnPress: () {},
-        )..show();
-      }
-    }
-    else {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.WARNING,
-        animType: AnimType.BOTTOMSLIDE,
-        title:'Error Connection' ,
-        desc: response.reasonPhrase,
-        btnOkOnPress: () {},
-      )..show();
-    }
-  }
+
+
 
   showLoaderDialog(BuildContext context){
     AlertDialog alert=AlertDialog(
@@ -156,58 +51,35 @@ class _AccountUpdateState extends State<Profil> {
   }
   @override
   Widget build(BuildContext context) {
-    getData();
+
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+
+        ],
+        title: Text('Payment',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(32, 189, 154, 1.0) ,
+      ),
       resizeToAvoidBottomInset: false,
           backgroundColor: Colors.white,
-      body:  isLoading ?
-      Center(
-          child: SizedBox(
-            height: 200,
-            width: 200,
-            child: SpinKitCircle(
-              itemBuilder: (BuildContext context, int index) {
-                return DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                  ),
-                );
-              },
-            ),
-          )
-      )
-          :
-
+      body:
       Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Color.fromRGBO(142, 158, 171, 1),
-              Color.fromRGBO(238, 242, 243, 1),
+              Color.fromRGBO(133, 184, 219, 1.0),
+              Color.fromRGBO(42, 164, 187, 1.0),
             ],
           ),
         ),
           child: ListView(
           children: [
-                SizedBox(
-                  height: 40,
-                ),
-                GestureDetector(
-                  onTap: (){
-                    getImage();
-                  },
-                  child:Container(
-                    child: Center(
-                      child: valid==true ?
-                      Image.file(image, fit: BoxFit.fill,height: 150,width: 100,): Image.network("https://seahfwebserver.herokuapp.com/media/profile_pics/${listUser[0].photo}", fit: BoxFit.fill,height: 100,width: 100,),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
+
+
+
                 Column(
 
                   children: [
@@ -217,7 +89,7 @@ class _AccountUpdateState extends State<Profil> {
                       width:350,
                       child:
                       TextField(
-                        controller: name,
+
 
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: 20,horizontal: 15),
@@ -241,7 +113,7 @@ class _AccountUpdateState extends State<Profil> {
                       width:350,
                       child:
                       TextField(
-                        controller: mail,
+
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: 20,horizontal: 15),
                           filled: true,
@@ -263,7 +135,7 @@ class _AccountUpdateState extends State<Profil> {
                       width:350,
                       child:
                       TextField(
-                        controller: pass,
+
                         obscureText: show,
 
                         decoration: InputDecoration(
@@ -298,7 +170,7 @@ class _AccountUpdateState extends State<Profil> {
                           width:350,
                           child:
                           TextField(
-                            controller: date,
+
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: 20,horizontal: 15),
                               filled: true,
@@ -319,7 +191,7 @@ class _AccountUpdateState extends State<Profil> {
                           width:350,
                           child:
                           TextField(
-                            controller: addresse,
+
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: 20,horizontal: 15),
                               filled: true,
@@ -342,7 +214,7 @@ class _AccountUpdateState extends State<Profil> {
                           width:350,
                           child:
                           TextField(
-                            controller: city,
+
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: 20,horizontal: 15),
                               filled: true,
@@ -364,7 +236,7 @@ class _AccountUpdateState extends State<Profil> {
                           width:350,
                           child:
                           TextField(
-                            controller: country,
+
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: 20,horizontal: 15),
                               filled: true,
@@ -386,7 +258,7 @@ class _AccountUpdateState extends State<Profil> {
                           width:350,
                           child:
                           TextField(
-                            controller: phone,
+
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: 20,horizontal: 15),
                               filled: true,
@@ -409,7 +281,7 @@ class _AccountUpdateState extends State<Profil> {
                       child:
                       ElevatedButton(
                         onPressed: (){
-                          update();
+
                           },
                         style: ElevatedButton.styleFrom(
                             fixedSize: const Size(210,65),

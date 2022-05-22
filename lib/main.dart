@@ -5,7 +5,7 @@ import 'package:foodybite_app/screens/favorite.dart';
 import 'package:foodybite_app/screens/home.dart';
 import 'package:foodybite_app/screens/info-conf%C3%A9rence.dart';
 import 'package:foodybite_app/screens/participation.dart';
-import 'package:foodybite_app/screens/profil.dart';
+import 'package:foodybite_app/screens/payment.dart';
 
 import 'package:foodybite_app/screens/recept-code.dart';
 import 'package:foodybite_app/screens/reset_password.dart';
@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
           ),
           image: new Image.asset('assets/images/seahf.png'),
           photoSize: 100.0,
-          backgroundColor: Colors.blue,
+          backgroundColor: Color.fromRGBO(226, 223, 196, 1.0),
+
           styleTextUnderTheLoader: new TextStyle(),
           loaderColor: Colors.white
       ),

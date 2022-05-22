@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodybite_app/class/conference.dart';
 import 'package:foodybite_app/screens/info-conf%C3%A9rence.dart';
+import 'package:foodybite_app/screens/payment.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 void main() {
@@ -52,9 +53,9 @@ class _FavoriteState extends State<Demande> {
             for(int i=0;i<long;i++){
               var id=json.encode(data2[i]['pk']);
               listId.add(id.toString());
-              var idConferece = json.encode(data2[i]['fields']['conference']);
+              var idConferece = data2[i]['fields']['conference'];
               getconference(idConferece.toString());
-              var reply= json.encode(data2[i]['fields']['reply']);
+              var reply= data2[i]['fields']['reply'];
               listReply.add(reply);
             };
 
@@ -188,7 +189,7 @@ class _FavoriteState extends State<Demande> {
         ],
         title: Text('Participations',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(19,37,94, 1) ,
+        backgroundColor: Color.fromRGBO(32, 189, 154, 1.0) ,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -200,8 +201,8 @@ class _FavoriteState extends State<Demande> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Color.fromRGBO(19,37,94, 1),
-              Color.fromRGBO(83,104,157, 1),
+              Color.fromRGBO(226, 223, 196, 1.0),
+              Color.fromRGBO(154, 186, 229, 1.0),
             ],
           ),
         ),
@@ -254,10 +255,16 @@ class _FavoriteState extends State<Demande> {
                   trailing: IconButton(onPressed:(){deleteparticipation(index);}, icon: Icon(Icons.delete)),
                   leading:CircleAvatar( maxRadius: 50,child:listConferences[index].banner=='default_conference_banner.jpg'?Image.network("https://seahfwebserver.herokuapp.com/media/${listConferences[index].banner}",width: 100, fit: BoxFit.fill,):Image.network("https://seahfwebserver.herokuapp.com/media/banner/${listConferences[index].banner}",width: 100,fit: BoxFit.fill,),),
                   title: Text(listConferences[index].titleConference,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                  subtitle: Text('Reply: ${listReply[index]}',style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),),
+                  subtitle: Text('Reply:${listReply[index]}',style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),),
                   onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Details(id: (this.listConferences[index].id).toString(),)));
+                    if(listReply[index]=="Accepted"){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Payment()));}
+                   else{
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Details(id: (this.listConferences[index].id).toString(),)));}
+
+
                   },
+
 
                 ),
               );

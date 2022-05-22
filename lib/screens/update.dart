@@ -432,8 +432,8 @@ class ProfilupdateState extends State<Profilupdate> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Color.fromRGBO(19, 37, 94, 1),
-              Color.fromRGBO(83, 104, 157, 1),
+              Color.fromRGBO(226, 223, 196, 1.0),
+              Color.fromRGBO(154, 186, 229, 1.0),
             ],
           ),
         ),
@@ -456,8 +456,8 @@ class ProfilupdateState extends State<Profilupdate> {
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                           colors: [
-                            Color.fromRGBO(119, 148, 225, 0.7),
-                            Color.fromRGBO(119, 148, 225, 1),
+                            Color.fromRGBO(38, 83, 219, 1.0),
+                            Color.fromRGBO(100, 148, 205, 1.0),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(10),

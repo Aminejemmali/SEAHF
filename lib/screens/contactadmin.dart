@@ -83,7 +83,7 @@ class ContactPageState extends State<ContactPage>{
         }, icon: Icon(Icons.arrow_back),iconSize: 25),
         title: Text('Contact',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(19,37,94, 1) ,
+        backgroundColor: Color.fromRGBO(32, 189, 154, 1.0) ,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -91,8 +91,8 @@ class ContactPageState extends State<ContactPage>{
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Color.fromRGBO(19,37,94, 1),
-              Color.fromRGBO(83,104,157, 1),
+              Color.fromRGBO(226, 223, 196, 1.0),
+              Color.fromRGBO(154, 186, 229, 1.0),
             ],
           ),
         ),

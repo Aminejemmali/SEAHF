@@ -23,12 +23,13 @@ class _MyAppStateinfo extends State<Moreinformations> {
 
   bool favoritstatue=false;
   int long =0;
-  bool isLoading = false;
+
+  bool isLoading = true;
   bool valid=false;
-  String idparti=" ";
+
   List<Speaker> listspeaker=[];
   String? username;
-
+ late String idpar;
 
   Future favorite() async {
     final prefs = await SharedPreferences.getInstance();
@@ -110,9 +111,9 @@ class _MyAppStateinfo extends State<Moreinformations> {
         List data2 = json.decode(data1['Participants']);
         setState(() {
           long=data2.length;
-          for(int i =0;i<long;){
+          for(int i =0;i<long;i++){
             var id = data2[i]['pk'];
-            searchspeaker(id);
+           searchspeaker(id);
           }
 
           isLoading = false;
@@ -139,10 +140,11 @@ class _MyAppStateinfo extends State<Moreinformations> {
         if(mounted){
           setState(() {
             var id = data2[0]['pk'];
+            var name=data1['Name_Speaker'];
             var fields = json.encode(data2[0]['fields']);
-            Speaker speaker = new Speaker(id, fields);
+            Speaker speaker = new Speaker(id, fields,name);
             listspeaker.add(speaker);
-
+            isLoading = false;
           });
         }
       }
@@ -169,8 +171,6 @@ class _MyAppStateinfo extends State<Moreinformations> {
     }
   }
 
-
-
   showLoaderDialog(BuildContext context){
     AlertDialog alert=AlertDialog(
       content: new Row(
@@ -187,11 +187,11 @@ class _MyAppStateinfo extends State<Moreinformations> {
     );
   }
 
-
   @override
   void initState() {
 
-   // getstatuefavorite();
+  getparticipationid();
+
     super.initState();
   }
   @override
@@ -204,6 +204,7 @@ class _MyAppStateinfo extends State<Moreinformations> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+
                 Container(
                   margin: EdgeInsets.all(2.5),
                   child: FloatingActionButton(
@@ -268,10 +269,27 @@ class _MyAppStateinfo extends State<Moreinformations> {
             ),
           ),
 
-          child:ListView.builder(
+          child:
+          isLoading
+              ?Center(
+              child: SizedBox(
+                height: 200,
+                width: 200,
+                child: SpinKitCircle(
+                  itemBuilder: (BuildContext context, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                      ),
+                    );
+                  },
+                ),
+              )
+          )
+              :ListView.builder(
               scrollDirection: Axis.vertical,
               physics: BouncingScrollPhysics(),
-              itemCount: long,
+              itemCount: listspeaker.length,
               itemBuilder: (context, index) {
                 return Container(
                   margin: EdgeInsets.all(10),
@@ -281,8 +299,8 @@ class _MyAppStateinfo extends State<Moreinformations> {
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                       colors: [
-                        Color.fromRGBO(119,148,225, 0.7),
-                        Color.fromRGBO(119,148,225, 1),
+                        Color.fromRGBO(48, 132, 227, 1.0),
+                        Color.fromRGBO(154, 186, 229, 1.0),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(30),
@@ -296,8 +314,8 @@ class _MyAppStateinfo extends State<Moreinformations> {
                     ],
                   ),
                   child:ListTile(
-                    title: Text("username!",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                    subtitle: Text('Biography: {listspeaker[index].Biography}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    title: Text(listspeaker[index].namespeaker,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    subtitle: Text('Biography: ${listspeaker[index].Biography}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
 
 
                   ),

@@ -14,8 +14,8 @@ import 'package:foodybite_app/screens/conference.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:foodybite_app/screens/favorite.dart';
-import 'package:foodybite_app/screens/notifications.dart';
-import 'package:foodybite_app/screens/profil.dart';
+
+import 'package:foodybite_app/screens/payment.dart';
 
 import 'package:foodybite_app/screens/update.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,8 +70,7 @@ class _HomeState extends State<Home> {
      body : screens[currentIndex],
      bottomNavigationBar: BottomNavigationBar(
        selectedItemColor: Colors.white,
-         backgroundColor:   Color.fromRGBO(19,37,94, 1),
-       currentIndex: currentIndex,
+         backgroundColor:   Color.fromRGBO(28, 52, 128, 1.0),       currentIndex: currentIndex,
        onTap: (index) => setState(() => currentIndex=index),
        items: [
          BottomNavigationBarItem(
@@ -82,17 +81,17 @@ class _HomeState extends State<Home> {
          BottomNavigationBarItem(
              icon: Icon(Icons.favorite),
              label: 'favorite',
-             backgroundColor:   Color.fromRGBO(19,37,94, 1),
+           backgroundColor:   Color.fromRGBO(28, 52, 128, 1.0),
          ),
          BottomNavigationBarItem(
            icon: Icon(Icons.send),
            label: 'Demandes',
-           backgroundColor:   Color.fromRGBO(19,37,94, 1),
+           backgroundColor:   Color.fromRGBO(28, 52, 128, 1.0),
          ),
          BottomNavigationBarItem(
              icon: Icon(Icons.notifications),
              label: 'notifications',
-             backgroundColor:   Color.fromRGBO(19,37,94, 1),
+             backgroundColor:   Color.fromRGBO(28, 52, 128, 1.0),
          ),
          ]
 
