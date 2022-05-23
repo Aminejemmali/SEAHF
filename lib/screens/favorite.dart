@@ -58,16 +58,7 @@ class _FavoriteState extends State<Favorite> {
         )..show();
       }
     }
-    else {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.WARNING,
-        animType: AnimType.BOTTOMSLIDE,
-        title:'Error Connection' ,
-        desc: response.reasonPhrase,
-        btnOkOnPress: () {},
-      )..show();
-    }
+
   }
    int long=0;
   List<Conference> listConferences=[];
@@ -108,16 +99,7 @@ class _FavoriteState extends State<Favorite> {
         )..show();
       }
     }
-    else {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.WARNING,
-        animType: AnimType.BOTTOMSLIDE,
-        title:'Error Connection' ,
-        desc: response.reasonPhrase,
-        btnOkOnPress: () {},
-      )..show();
-    }
+
   }
   showLoaderDialog(BuildContext context){
     AlertDialog alert=AlertDialog(
@@ -135,8 +117,13 @@ class _FavoriteState extends State<Favorite> {
     );
   }
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     getfavorite();
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           actions: [

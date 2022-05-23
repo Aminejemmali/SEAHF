@@ -1,10 +1,15 @@
 import 'dart:convert';
 
+import 'dart:ffi';
+
 class Conference {
   late int id;
   late String banner;
   late String titleConference;
   late String dateConference;
+  late String lastdatepaper;
+  late String lastdaterevision;
+  late String latedatefinalpapier;
   late String address01;
   late String country;
   late String city;
@@ -14,6 +19,14 @@ class Conference {
   late int numPlace;
   late String statutConference;
   late String shortTitle;
+  late double prixattendee;
+  late double prixauteur;
+  late double prixspeaker;
+  late double prixindustrial;
+  late double prixinstructor;
+
+
+
 
   Conference(int id,String fields){
     var data2 =json.decode(fields);
@@ -21,6 +34,9 @@ class Conference {
     this.banner=data2['banner'];
     this.titleConference=data2['titleConference'];
     this.dateConference=data2['dateConference'];
+    this.lastdatepaper=data2['lastDatePaper'];
+    this.lastdaterevision=data2['lastDateRevision'];
+    this.latedatefinalpapier=data2['lastDateFinalPaper'];
     this.address01=data2['address01'];
     this.country=data2['country'];
     this.city=data2['city'];
@@ -29,6 +45,13 @@ class Conference {
     this.moreInformation=data2['moreInformation'];
     this.numPlace=data2['numPlace'];
     this.statutConference=data2['statutConference'];
+    this.prixattendee=data2['prixAttendee'];
+    this.prixauteur=data2['prixAuteur'];
+    this.prixspeaker=data2['prixSpeaker'];
+    this.prixindustrial=data2['prixIndustrial'];
+    this.prixinstructor=data2['prixInstructor'];
+
+
 
     String short='';
     List<String> not=['and','on','&'];
@@ -49,6 +72,9 @@ class Conference {
     'banner': banner,
     'titleConference': titleConference,
     'dateConference':dateConference,
+    'lastDatePaper':lastdatepaper,
+    'lastDateRevision':lastdaterevision,
+    'lastDateFinalPaper':latedatefinalpapier,
     'address01': address01,
     'country': country,
     'city': city,
@@ -57,6 +83,11 @@ class Conference {
     'moreInformation': moreInformation,
     'numPlace': numPlace,
     'statutConference': statutConference,
+    'prixAttendee':prixattendee,
+    'prixAuteur':prixauteur,
+    'prixSpeaker':prixspeaker,
+    'pricIndustrial':prixindustrial,
+    'prixInstructor':prixinstructor,
 
   };
 

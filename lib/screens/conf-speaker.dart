@@ -189,6 +189,7 @@ class _MyAppStateinfo extends State<Moreinformations> {
 
   @override
   void initState() {
+getstatuefavorite();
 
   getparticipationid();
 
@@ -198,6 +199,13 @@ class _MyAppStateinfo extends State<Moreinformations> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: AppBar(
+
+
+        title: Text('Speakers',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(32, 189, 154, 1.0) ,
+      ),
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 60.0,),
           child: Container(
@@ -208,6 +216,7 @@ class _MyAppStateinfo extends State<Moreinformations> {
                 Container(
                   margin: EdgeInsets.all(2.5),
                   child: FloatingActionButton(
+                    heroTag: "cc",
                     onPressed: () {
                       AwesomeDialog(
                         context: context,
@@ -241,6 +250,7 @@ class _MyAppStateinfo extends State<Moreinformations> {
                 Container(
                   margin: EdgeInsets.all(2.5),
                   child: FloatingActionButton(
+                    heroTag: "cc",
                     onPressed: () {
                       favorite();
                     },

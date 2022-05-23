@@ -84,19 +84,13 @@ class _ParticipationState extends State<Participation> {
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
           colors: [
-          Color.fromRGBO(32, 189, 154, 1.0) ,
+            Color.fromRGBO(119, 225, 225, 0.7019607843137254),
+            Color.fromRGBO(110, 208, 114, 1.0),
 
           ],
         ),
 
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(2,12,30, 1),
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: Offset(2, 5), // changes position of shadow
-          ),
-        ],
+
       ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -109,8 +103,8 @@ class _ParticipationState extends State<Participation> {
                    begin: Alignment.centerLeft,
                    end: Alignment.centerRight,
                    colors: [
-                     Color.fromRGBO(226, 223, 196, 1.0),
-                     Color.fromRGBO(154, 186, 229, 1.0),
+                     Color.fromRGBO(119,148,225, 0.7),
+                     Color.fromRGBO(119,148,225, 1),
                    ],
                  ),
                  borderRadius: BorderRadius.circular(30),

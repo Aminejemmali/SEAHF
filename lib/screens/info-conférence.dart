@@ -2,12 +2,16 @@ import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+
+
 import 'package:foodybite_app/class/conference.dart';
-import 'package:foodybite_app/screens/more-information.dart';
-import 'package:foodybite_app/screens/participation.dart';
+import 'package:foodybite_app/screens/conf-galerie.dart';
+import 'package:foodybite_app/screens/conf-partners.dart';
+import 'package:foodybite_app/screens/conf-speaker.dart';
+import 'package:foodybite_app/screens/conf-sponsor.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,9 +49,8 @@ class _MyAppState extends State<Details> {
             Conference conferance = new Conference(id, fields);
             listConferences.add(conferance);
             isLoading = false;
+          });}
 
-          });
-        }
       }
       else{
         AwesomeDialog(
@@ -116,6 +119,7 @@ class _MyAppState extends State<Details> {
     if (response.statusCode == 200) {
       var s = await response.stream.bytesToString();
       Map<String, dynamic> data1 = json.decode(s);
+      if(mounted){
       setState(() {
         if (data1['Reponse'] == 'Exist') {
           favoritstatue = true;
@@ -127,17 +131,38 @@ class _MyAppState extends State<Details> {
           print("faild");
         }
       });
-    }
+    }}
   }
 Future sendparticipantcoor( String idconf) async{
   final prefs = await SharedPreferences.getInstance();
   prefs.setString('idconf', idconf);
   Navigator.pushNamed(context, 'partici');
 }
+  showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: new Row(
+        children: [
+          CircularProgressIndicator(),
+          Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
+  }
+@override
+void initState() {
+  getData();
+  getstatuefavorite();
+    super.initState();
+  }
     @override
     Widget build(BuildContext context) {
-      getData();
-      getstatuefavorite();
+
+
       return Scaffold(
         floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 60.0,),
@@ -148,6 +173,7 @@ Future sendparticipantcoor( String idconf) async{
                   Container(
                     margin: EdgeInsets.all(2.5),
                     child: FloatingActionButton(
+                      heroTag: "aa",
                       onPressed: () {
                         AwesomeDialog(
                           context: context,
@@ -181,6 +207,7 @@ Future sendparticipantcoor( String idconf) async{
                   Container(
                     margin: EdgeInsets.all(2.5),
                     child: FloatingActionButton(
+                      heroTag: "bb",
                       onPressed: () {
                         favorite();
                       },
@@ -195,7 +222,6 @@ Future sendparticipantcoor( String idconf) async{
               ),
             )
         ),
-
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -209,7 +235,26 @@ Future sendparticipantcoor( String idconf) async{
               ],
             ),
           ),
-          child: ListView.builder(
+            child:isLoading
+                ?Center(
+                child: SizedBox(
+
+                  height: 200,
+                  width: 200,
+                  child: SpinKitCircle(
+                    itemBuilder: (BuildContext context, int index) {
+                      return DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+
+                        ),
+                      );
+                    },
+                  ),
+                )
+            )
+                :
+             ListView.builder(
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemCount: long,
@@ -286,6 +331,158 @@ Future sendparticipantcoor( String idconf) async{
                             style: TextStyle(color: Colors.white,
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),)
+                      ),
+                    ),
+                    //dates
+                    Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119, 148, 225, 0.7),
+                            Color.fromRGBO(119, 148, 225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2, 12, 30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Text(
+                            'Date conference:', style: TextStyle(color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),),
+                          leading: Container(
+                              height: double.infinity, child: Icon(Icons
+                              .home_sharp, color: Colors.white,)),
+                          subtitle: Text(listConferences[0].dateConference,
+                            style: TextStyle(color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),)
+
+                      ),
+                    ),
+                    //datepaper
+                    Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119, 148, 225, 0.7),
+                            Color.fromRGBO(119, 148, 225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2, 12, 30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Text(
+                            'Last Date Paper:', style: TextStyle(color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),),
+                          leading: Container(
+                              height: double.infinity, child: Icon(Icons
+                              .home_sharp, color: Colors.white,)),
+                          subtitle: Text(listConferences[0].lastdatepaper,
+                            style: TextStyle(color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),)
+
+                      ),
+                    ),
+                    //daterevision
+                    Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119, 148, 225, 0.7),
+                            Color.fromRGBO(119, 148, 225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2, 12, 30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Text(
+                            'Last Date Revision:', style: TextStyle(color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),),
+                          leading: Container(
+                              height: double.infinity, child: Icon(Icons
+                              .home_sharp, color: Colors.white,)),
+                          subtitle: Text(listConferences[0].lastdaterevision,
+                            style: TextStyle(color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),)
+
+                      ),
+                    ),
+                    //datefinal
+                    Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119, 148, 225, 0.7),
+                            Color.fromRGBO(119, 148, 225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2, 12, 30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Text(
+                            ' Date Final Paper:', style: TextStyle(color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),),
+                          leading: Container(
+                              height: double.infinity, child: Icon(Icons
+                              .home_sharp, color: Colors.white,)),
+                          subtitle: Text(listConferences[0].latedatefinalpapier,
+                            style: TextStyle(color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),)
+
                       ),
                     ),
                     //Address01
@@ -516,6 +713,191 @@ Future sendparticipantcoor( String idconf) async{
 
                       ),
                     ),
+                    //prixspeaker
+                    Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119, 148, 225, 0.7),
+                            Color.fromRGBO(119, 148, 225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2, 12, 30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Text('Speaker price:', style: TextStyle(color: Colors
+                              .white, fontSize: 17, fontWeight: FontWeight
+                              .bold),),
+                          leading: Container(
+                              height: double.infinity, child: Icon(Icons
+                              .text_snippet, color: Colors.white,)),
+                          subtitle: Text((listConferences[0].prixspeaker).toString(),
+                            style: TextStyle(color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),)
+
+                      ),
+                    ),
+                    //prixauteur
+                    Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119, 148, 225, 0.7),
+                            Color.fromRGBO(119, 148, 225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2, 12, 30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Text('Auteur price:', style: TextStyle(color: Colors
+                              .white, fontSize: 17, fontWeight: FontWeight
+                              .bold),),
+                          leading: Container(
+                              height: double.infinity, child: Icon(Icons
+                              .text_snippet, color: Colors.white,)),
+                          subtitle: Text((listConferences[0].prixauteur).toString(),
+                            style: TextStyle(color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),)
+
+                      ),
+                    ),
+                    //prixinstructor
+                    Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119, 148, 225, 0.7),
+                            Color.fromRGBO(119, 148, 225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2, 12, 30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Text('Instructor price:', style: TextStyle(color: Colors
+                              .white, fontSize: 17, fontWeight: FontWeight
+                              .bold),),
+                          leading: Container(
+                              height: double.infinity, child: Icon(Icons
+                              .text_snippet, color: Colors.white,)),
+                          subtitle: Text((listConferences[0].prixinstructor).toString(),
+                            style: TextStyle(color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),)
+
+                      ),
+                    ),
+                    //prixinductrial
+                    Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119, 148, 225, 0.7),
+                            Color.fromRGBO(119, 148, 225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2, 12, 30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Text('Industrial price:', style: TextStyle(color: Colors
+                              .white, fontSize: 17, fontWeight: FontWeight
+                              .bold),),
+                          leading: Container(
+                              height: double.infinity, child: Icon(Icons
+                              .text_snippet, color: Colors.white,)),
+                          subtitle: Text((listConferences[0].prixindustrial).toString(),
+                            style: TextStyle(color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),)
+
+                      ),
+                    ),
+                    //prixattendue
+                    Container(
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119, 148, 225, 0.7),
+                            Color.fromRGBO(119, 148, 225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2, 12, 30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Text('Attendee price:', style: TextStyle(color: Colors
+                              .white, fontSize: 17, fontWeight: FontWeight
+                              .bold),),
+                          leading: Container(
+                              height: double.infinity, child: Icon(Icons
+                              .text_snippet, color: Colors.white,)),
+                          subtitle: Text((listConferences[0].prixattendee).toString(),
+                            style: TextStyle(color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),)
+
+                      ),
+                    ),
                     //NumPlace
                     Container(
                       margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -563,8 +945,9 @@ Future sendparticipantcoor( String idconf) async{
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                             colors: [
-                              Color.fromRGBO(226, 223, 196, 1.0),
-                              Color.fromRGBO(154, 186, 229, 1.0),
+                              Color.fromRGBO(119, 148, 225, 0.7),
+                              Color.fromRGBO(119, 148, 225, 1),
+
                             ],
                           ),
                           borderRadius: BorderRadius.circular(30),
@@ -593,6 +976,7 @@ Future sendparticipantcoor( String idconf) async{
                         )
 
                     ),
+                    //speaker
                     Container(
                       margin: EdgeInsets.all(10),
                       padding: EdgeInsets.all(10),
@@ -616,9 +1000,99 @@ Future sendparticipantcoor( String idconf) async{
                         ],
                       ),
                       child:ListTile(
-                        title: Text("See More",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        title: Text("Speakers in this conference",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                        onTap: (){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Moreinformations(id: widget.id)),);
+                        },
+
+                      ),),
+                    //sponsor
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(100, 201, 56, 0.7019607843137254),
+                            Color.fromRGBO(15, 109, 89, 1.0),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2,12,30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child:ListTile(
+                        title: Text("Sponsors",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Sponsor(id: widget.id)),);
+                        },
+
+                      ),),
+                    //partners
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(100, 201, 56, 0.7019607843137254),
+                            Color.fromRGBO(15, 109, 89, 1.0),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2,12,30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child:ListTile(
+                        title: Text("Partners",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Partner(id: widget.id)),);
+                        },
+
+                      ),),
+                    //galerie
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(100, 201, 56, 0.7019607843137254),
+                            Color.fromRGBO(15, 109, 89, 1.0),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2,12,30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child:ListTile(
+                        title: Text("Galerie",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Galerie(id: widget.id)),);
                         },
 
                       ),),

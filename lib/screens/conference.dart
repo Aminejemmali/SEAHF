@@ -86,6 +86,7 @@ class ConferencesPageState extends State<ConferencesPage>{
       Map<String, dynamic> data1 = json.decode(s);
       if(data1['Reponse']=='Success'){
         List data2 = json.decode(data1['Conferences']);
+        if(mounted){
         setState(() {
           longConferences =data2.length;
           for(int i=0;i<longConferences;i++) {
@@ -95,7 +96,7 @@ class ConferencesPageState extends State<ConferencesPage>{
             listConferences.add(conferance);
           }
 
-        });
+        });}
       }
       else{
         AwesomeDialog(
@@ -142,6 +143,7 @@ class ConferencesPageState extends State<ConferencesPage>{
 
   @override
   Widget build(BuildContext context) {
+    getData();
     return Scaffold(
       appBar: AppBar(
         actions: [

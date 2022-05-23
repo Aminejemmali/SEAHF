@@ -291,6 +291,13 @@ class ProfilupdateState extends State<Profilupdate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(listUsers.isEmpty?
+          "  ": listUsers[0].username,),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(32, 189, 154, 1.0) ,
+        leading: IconButton(onPressed: ()=>Navigator.of(context).pushReplacementNamed('Home1'), icon: Icon(Icons.arrow_back),iconSize: 30,),
+      ),
       floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 60.0,),
           child: Container(
@@ -391,39 +398,7 @@ class ProfilupdateState extends State<Profilupdate> {
             ),
           )
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          backgroundColor:   Color.fromRGBO(19,37,94, 1),
-          onTap: (index) {
-            if(index==0){
-              Navigator.pushReplacementNamed(context, 'Home1');
-            }
-            if(index==1){
-              Navigator.pushReplacementNamed(context, 'favorite');
-            }
-            if(index==2){
-              Navigator.pushReplacementNamed(context, 'Notification');
-            }
 
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor:   Color.fromRGBO(19,37,94, 1),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'favorite',
-              backgroundColor:   Color.fromRGBO(19,37,94, 1),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'notifications',
-              backgroundColor:   Color.fromRGBO(19,37,94, 1),
-            ),
-          ]
-
-      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
