@@ -38,7 +38,7 @@ class _MyHomePageState extends State<Auteur> {
        if (data1['Reponse'] == 'Success') {
          AwesomeDialog(
            context: context,
-           dialogType: DialogType.WARNING,
+           dialogType: DialogType.SUCCES,
            animType: AnimType.BOTTOMSLIDE,
            title:'done' ,
            desc: 'Done',
@@ -94,9 +94,36 @@ class _MyHomePageState extends State<Auteur> {
                   ),
                 ],
               ),
+
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(119,148,225, 0.7),
+                            Color.fromRGBO(119,148,225, 1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2,12,30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                          "please send lien from easychair ",
+                      style:TextStyle(fontSize:25 ),),
+                    ),
                     Container(
                       margin: EdgeInsets.all(10),
                       padding: EdgeInsets.all(10),

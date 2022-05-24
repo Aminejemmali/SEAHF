@@ -208,42 +208,50 @@ class ConferencesPageState extends State<ConferencesPage>{
               ),
               Container(
                 height:500 ,
-                child: ListView.builder(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                     scrollDirection: Axis.vertical,
                     physics: BouncingScrollPhysics(),
                     itemCount: longConferences,
                     itemBuilder: (context, index) {
-                      return Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Color.fromRGBO(64, 93, 238, 0.7019607843137254),
-                              Color.fromRGBO(120, 153, 238, 1.0),
+                      return InkWell(
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color.fromRGBO(64, 93, 238, 0.7019607843137254),
+                                Color.fromRGBO(120, 153, 238, 1.0),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromRGBO(2,12,30, 1),
+                                spreadRadius: 1,
+                                blurRadius: 10,
+                                offset: Offset(2, 5), // changes position of shadow
+                              ),
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromRGBO(2,12,30, 1),
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: Offset(2, 5), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child:ListTile(
-                          leading:CircleAvatar( maxRadius: 50,child:listConferences[index].banner=='default_conference_banner.jpg'?Image.network("https://seahfwebserver.herokuapp.com/media/${listConferences[index].banner}",width: 100, fit: BoxFit.fill,):Image.network("https://seahfwebserver.herokuapp.com/media/banner/${listConferences[index].banner}",width: 100,fit: BoxFit.fill,),),
-                          title: Text(listConferences[index].titleConference,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                          subtitle: Text('Statute: ${listConferences[index].statutConference}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-    onTap: (){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Details(id: (this.listConferences[index].id).toString(),)));
-    },
+                          child:Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              listConferences[index].banner=='default_conference_banner.jpg'?Image.network("https://seahfwebserver.herokuapp.com/media/default_conference_banner.jpg",height:70,width: 100, fit: BoxFit.fill,):Image.network("https://seahfwebserver.herokuapp.com/media/banner/${listConferences[index].banner}",width: 200,fit: BoxFit.fill,),
+                              Text(listConferences[index].titleConference,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                              Text('Statute: ${listConferences[index].statutConference}',style: TextStyle(color: Colors.amberAccent,fontWeight: FontWeight.bold),),
+                              Text('Date: ${listConferences[index].dateConference}',style: TextStyle(color: Colors.deepOrange,fontWeight: FontWeight.bold),),
+
+                            ],
+                          ),
 
                         ),
+                        onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Details(id: (this.listConferences[index].id).toString(),)));
+                        },
                       );
                     }
                 ),
@@ -256,12 +264,13 @@ class ConferencesPageState extends State<ConferencesPage>{
 
 }
 class search extends SearchDelegate {
+
   List<Conference> listConferences=[];
   search(List<Conference> list){
     listConferences=list;
   }
 
-  int longConferences =0;
+
   Future getData() async {
     var request = http.MultipartRequest('POST',
         Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/GetAll_Conference'));
@@ -272,13 +281,14 @@ class search extends SearchDelegate {
       if(data1['Reponse']=='Success'){
         List data2 = json.decode(data1['Conferences']);
 
-          longConferences =data2.length;
+          var longConferences =data2.length;
           for(int i=0;i<longConferences;i++) {
             var id = data2[i]['pk'];
             var fields = json.encode(data2[i]['fields']);
             Conference conferance = new Conference(id, fields);
             listConferences.add(conferance);
-          }}}}
+          }
+      }}}
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -307,9 +317,10 @@ class search extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+
    List filtreliste= listConferences.where((element) => element.titleConference.contains(query) ).toList();
     return ListView.builder(
-        itemCount: query=="" ? listConferences.length:filtreliste.length,
+        itemCount: query=="" ? 3:3,
     itemBuilder :(context,i){
           return  Container(
             padding: EdgeInsets.all(10),

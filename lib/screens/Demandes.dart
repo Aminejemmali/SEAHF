@@ -258,7 +258,7 @@ class _FavoriteState extends State<Demande> {
                   subtitle: Text('Reply:${listReply[index]}',style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),),
                   onTap: (){
                     if(listReply[index]=="Accepted"){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Payment()));}
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Payment(idconference: (this.listConferences[index].id).toString(), idparticipant: listId[index].toString())));}
                    else{
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Details(id: (this.listConferences[index].id).toString(),)));}
 

@@ -40,7 +40,7 @@ class _MyHomePageState extends State<Industrial> {
         if (data1['Reponse'] == 'Success') {
           AwesomeDialog(
             context: context,
-            dialogType: DialogType.WARNING,
+            dialogType: DialogType.SUCCES,
             animType: AnimType.BOTTOMSLIDE,
             title:'done' ,
             desc: 'Done',

@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:foodybite_app/class/Gallery.dart';
 import 'package:foodybite_app/class/Speaker.dart';
+import 'package:foodybite_app/class/Topic.dart';
+
 
 import 'package:foodybite_app/class/conference.dart';
 
@@ -13,14 +14,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 
-class Galerie extends StatefulWidget {
+class Topic extends StatefulWidget {
   String id ;
-  Galerie({Key? key,required this.id}) : super(key: key);
+  Topic( {Key? key,required this.id}) : super(key: key);
 
   @override
-  State<Galerie> createState() => _MyAppStateSponsor();
+  State<Topic> createState() => _MyAppStateinfo();
 }
-class _MyAppStateSponsor extends State<Galerie> {
+class _MyAppStateinfo extends State<Topic> {
 
   bool favoritstatue=false;
   int long =0;
@@ -28,15 +29,15 @@ class _MyAppStateSponsor extends State<Galerie> {
   bool isLoading = true;
   bool valid=false;
 
-  List<Gallery> listgallerie=[];
+  List<Topics> listtopic=[];
   String? username;
   late String idpar;
 
   Future favorite() async {
     final prefs = await SharedPreferences.getInstance();
     String? iduser = await prefs.getString('iduser');
-
-
+    print(iduser.toString());
+    print(widget.id);
     var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/AddDelFavorite'));
     request.fields.addAll({
       'idUser': iduser.toString(),
@@ -99,8 +100,8 @@ class _MyAppStateSponsor extends State<Galerie> {
   }
 
 
-  /* Future getparticipationid() async{
-    var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/GetAll_Participants_Conference'));
+  Future gettopic() async{
+    var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/GetAll_Topics_Conference'));
     request.fields.addAll({
       'idConference': widget.id
     });
@@ -109,12 +110,15 @@ class _MyAppStateSponsor extends State<Galerie> {
       var s=await response.stream.bytesToString();
       Map<String, dynamic> data1 = json.decode(s);
       if(data1['Reponse']=='Success'){
-        List data2 = json.decode(data1['Participants']);
+        List data2 = json.decode(data1['Topics']);
         setState(() {
           long=data2.length;
           for(int i =0;i<long;i++){
             var id = data2[i]['pk'];
-            searchspeaker(id);
+            var fields=json.encode(data2[i]['fields']);
+            Topics topic= new Topics(id, fields);
+            listtopic.add(topic);
+
           }
 
           isLoading = false;
@@ -125,53 +129,7 @@ class _MyAppStateSponsor extends State<Galerie> {
       }
 
     }}
-*/
-  Future searchgallery( ) async{
-    var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/GetAll_Gallerys_Conference'));
-    request.fields.addAll({
-      'idConference': widget.id
-    });
-    http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      var s=await response.stream.bytesToString();
-      Map<String, dynamic> data1 = json.decode(s);
-      if(data1['Reponse']=='Success'){
-        List data2 = json.decode(data1['Gallerys']);
-        if(mounted){
-          setState(() {
-            long=data2.length;
-            for(int i=0;i<long;i++) {
-              var id = data2[0]['pk'];
-              var fields = json.encode(data2[0]['fields']);
-              Gallery gallery = new Gallery(id, fields);
-              listgallerie.add(gallery);
 
-            }
-            isLoading = false;});
-        }
-      }
-      else{
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.WARNING,
-          animType: AnimType.BOTTOMSLIDE,
-          title:'Error Connection' ,
-          desc: data1['Reponse'],
-          btnOkOnPress: () {},
-        )..show();
-      }
-    }
-    else {
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.WARNING,
-        animType: AnimType.BOTTOMSLIDE,
-        title:'Error Connection' ,
-        desc: response.reasonPhrase,
-        btnOkOnPress: () {},
-      )..show();
-    }
-  }
 
   showLoaderDialog(BuildContext context){
     AlertDialog alert=AlertDialog(
@@ -191,8 +149,10 @@ class _MyAppStateSponsor extends State<Galerie> {
 
   @override
   void initState() {
-    searchgallery();
     getstatuefavorite();
+
+    gettopic();
+
     super.initState();
   }
   @override
@@ -200,7 +160,9 @@ class _MyAppStateSponsor extends State<Galerie> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Galerie',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
+
+
+        title: Text('Topics',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(32, 189, 154, 1.0) ,
       ),
@@ -214,7 +176,7 @@ class _MyAppStateSponsor extends State<Galerie> {
                 Container(
                   margin: EdgeInsets.all(2.5),
                   child: FloatingActionButton(
-                    heroTag: "aa",
+                    heroTag: "cc",
                     onPressed: () {
                       AwesomeDialog(
                         context: context,
@@ -248,7 +210,7 @@ class _MyAppStateSponsor extends State<Galerie> {
                 Container(
                   margin: EdgeInsets.all(2.5),
                   child: FloatingActionButton(
-                    heroTag: "zz",
+                    heroTag: "cc",
                     onPressed: () {
                       favorite();
                     },
@@ -294,33 +256,41 @@ class _MyAppStateSponsor extends State<Galerie> {
               ),
             )
         )
-            :  ListView.builder(
-          scrollDirection: Axis.vertical,
-          physics: BouncingScrollPhysics(),
-          itemCount: listgallerie.length,
-          itemBuilder: (context, index) {
-            return Container(
-              height: 250,
-              alignment: AlignmentDirectional.center,
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 3), // changes position of shadow
+            :ListView.builder(
+            scrollDirection: Axis.vertical,
+            physics: BouncingScrollPhysics(),
+            itemCount: listtopic.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Color.fromRGBO(48, 132, 227, 1.0),
+                      Color.fromRGBO(154, 186, 229, 1.0),
+                    ],
                   ),
-                ],
-              ),
-              child:listgallerie[index].photo=='default_conference_photo.jpg'?Image.network("https://seahfwebserver.herokuapp.com/media/${listgallerie[index].photo}",width: 350,height: 250, fit: BoxFit.fill,):Image.network("https://seahfwebserver.herokuapp.com/media/gallery/${listgallerie[index].photo}",width:350,height: 250,fit: BoxFit.fill,),);
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(2,12,30, 1),
+                      spreadRadius: 1,
+                      blurRadius: 10,
+                      offset: Offset(2, 5), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child:ListTile(
+                  title: Text(listtopic[index].titletopic,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
 
 
-
-          }
-      ),
+                ),
+              );
+            }
+        ),
       ),
     );
 

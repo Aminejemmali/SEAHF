@@ -205,6 +205,7 @@ class ProfilupdateState extends State<Profilupdate> {
       'address01': listUsers[0].address1,
       'country': listUsers[0].country,
       'city': listUsers[0].city,
+      'password':listUsers[0].password,
       'statutUser': 'Activated'
     });
     if (validateImage == true) {
@@ -318,6 +319,7 @@ class ProfilupdateState extends State<Profilupdate> {
                           date.text = listUsers[0].dateBirth;
                           addresse.text = listUsers[0].address1;
                           phone.text = listUsers[0].phone;
+                          pass.text = listUsers[0].password;
                         }
                         else {
                           AwesomeDialog(
@@ -343,6 +345,7 @@ class ProfilupdateState extends State<Profilupdate> {
                                 listUsers[0].dateBirth=date.text;
                                 listUsers[0].address1=addresse.text;
                                 listUsers[0].phone=phone.text;
+                                listUsers[0].password=pass.text;
                                 editMode = false;
                               });
                               updateUser();
@@ -773,7 +776,7 @@ class ProfilupdateState extends State<Profilupdate> {
                           fontWeight: FontWeight.bold),),
                       leading: Container(height: double.infinity,
                           child: Icon(
-                            Icons.info_outline_rounded, color: Colors.white,)),
+                            Icons.date_range, color: Colors.white,)),
                       subtitle: editMode == false
                           ? Text(listUsers[0].dateBirth,
                         style: TextStyle(color: Colors.white,
@@ -787,6 +790,54 @@ class ProfilupdateState extends State<Profilupdate> {
                             fontSize: 17,
                             fontWeight: FontWeight.bold),
                         controller: date,
+                        decoration: InputDecoration(border: InputBorder.none,),
+                      ),
+                    ),
+                  ),
+                  //password
+                  Container(
+                    margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color.fromRGBO(119, 148, 225, 0.7),
+                          Color.fromRGBO(119, 148, 225, 1),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(2, 12, 30, 1),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: Offset(2, 5), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: ListTile(
+                      title: Text('Password:', style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),),
+                      leading: Container(height: double.infinity,
+                          child: Icon(
+                            Icons.lock, color: Colors.white,)),
+                      subtitle: editMode == false
+                          ? Text(listUsers[0].password,
+                        style: TextStyle(color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),)
+                          : TextFormField(
+                        keyboardType: TextInputType.multiline,
+                        minLines: 1,
+                        maxLines: 10,
+                        style: TextStyle(color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                        controller: pass,
                         decoration: InputDecoration(border: InputBorder.none,),
                       ),
                     ),

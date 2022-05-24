@@ -7,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
 import 'package:foodybite_app/class/conference.dart';
+import 'package:foodybite_app/screens/Topics.dart';
 import 'package:foodybite_app/screens/conf-galerie.dart';
 import 'package:foodybite_app/screens/conf-partners.dart';
 import 'package:foodybite_app/screens/conf-speaker.dart';
@@ -1000,10 +1001,8 @@ void initState() {
                         ],
                       ),
                       child:ListTile(
-                        title: Text("Speakers in this conference",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                       onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Moreinformations(id: widget.id)),);
-                        },
+                        trailing: IconButton(icon: Icon(Icons.send_and_archive_sharp), onPressed: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Moreinformations(id: widget.id)),),),
+                        title: Text("Speakers",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
 
                       ),),
                     //sponsor
@@ -1030,10 +1029,9 @@ void initState() {
                         ],
                       ),
                       child:ListTile(
+                        trailing: IconButton(icon: Icon(Icons.send_and_archive_sharp), onPressed: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Sponsor(id: widget.id)),),),
                         title: Text("Sponsors",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                        onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Sponsor(id: widget.id)),);
-                        },
+
 
                       ),),
                     //partners
@@ -1060,10 +1058,10 @@ void initState() {
                         ],
                       ),
                       child:ListTile(
+                        trailing: IconButton(icon: Icon(Icons.send_and_archive_sharp), onPressed: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Partner(id: widget.id)),),),
+
                         title: Text("Partners",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                        onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Partner(id: widget.id)),);
-                        },
+
 
                       ),),
                     //galerie
@@ -1090,10 +1088,38 @@ void initState() {
                         ],
                       ),
                       child:ListTile(
+                        trailing: IconButton(icon: Icon(Icons.send_and_archive_sharp), onPressed: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Galerie(id: widget.id)),),),
+
                         title: Text("Galerie",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                        onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Galerie(id: widget.id)),);
-                        },
+
+                      ),),
+                    //topic
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(100, 201, 56, 0.7019607843137254),
+                            Color.fromRGBO(15, 109, 89, 1.0),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(2,12,30, 1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(2, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child:ListTile(
+                        trailing: IconButton(icon: Icon(Icons.send_and_archive_sharp), onPressed: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Topic(id: widget.id)),),),
+                        title: Text("Topics",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+
 
                       ),),
                   ],

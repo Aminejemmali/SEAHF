@@ -37,6 +37,9 @@ class _FavoriteState extends State<Favorite> {
         List data2 = json.decode(data1['Favorites']);
         if(mounted){
           setState(() {
+            if(data2.isEmpty){
+              isLoading=false;
+            }
             long=data2.length;
             for(int i=0;i<long;i++){
             var id = json.encode(data2[i]['fields']['conference']);
