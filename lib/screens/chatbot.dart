@@ -181,8 +181,8 @@ class _NotifPageState extends State<NotifPage> {
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: [
-                      Color.fromRGBO(119,148,225, 0.7),
-                      Color.fromRGBO(119,148,225, 1),
+                      Color.fromRGBO(58, 62, 58, 0.7019607843137254),
+                      Color.fromRGBO(82, 239, 239, 1.0),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(30),

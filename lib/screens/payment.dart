@@ -46,6 +46,10 @@ class _AccountUpdateState extends State<Payment> {
       Map<String, dynamic> data1 = json.decode(s);
       setState(() {
         if (data1['Reponse'] == 'Success') {
+
+          if (data1['Price']==null){
+            isLoading=false;
+          }
           price=data1['Price'];
           isLoading=false;
 
@@ -63,7 +67,45 @@ class _AccountUpdateState extends State<Payment> {
       });
     }
   }
+  Future payment( double price)async{
+    var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/Insert_Payment'));
+    request.fields.addAll({
+      'idParticipant': widget.idparticipant,
+      'price': price.toString()
+    });
 
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+        var s = await response.stream.bytesToString();
+        Map<String, dynamic> data1 = json.decode(s);
+        setState(() {
+          if (data1['Reponse'] == 'Success') {
+            AwesomeDialog(
+              context: context,
+              dialogType: DialogType.SUCCES,
+              animType: AnimType.BOTTOMSLIDE,
+              title:'done' ,
+              desc: 'Done',
+              btnOkOnPress: () {},
+            )..show();
+              }
+
+        else if(data1['Reponse'] == 'Exist'){
+            AwesomeDialog(
+              context: context,
+              dialogType: DialogType.INFO,
+              animType: AnimType.BOTTOMSLIDE,
+              title:'Error' ,
+              desc: 'You have already send money',
+              btnOkOnPress: () {},
+            )..show();
+    }
+        });
+
+  }
+        }
 
   showLoaderDialog(BuildContext context){
     AlertDialog alert=AlertDialog(
@@ -198,7 +240,7 @@ class _AccountUpdateState extends State<Payment> {
                           filled: true,
                           fillColor: Colors.grey.shade100,
                           prefixIcon: Icon(Icons.monetization_on),
-                          labelText: "400 ",
+                          labelText: "Price ",
 
 
 
@@ -216,6 +258,7 @@ class _AccountUpdateState extends State<Payment> {
                       child:
                       ElevatedButton(
                         onPressed: (){
+                          payment(price);
 
                           },
                         style: ElevatedButton.styleFrom(
