@@ -41,7 +41,19 @@ class ContactPageState extends State<ContactPage>{
       var s=await response.stream.bytesToString();
       Map<String, dynamic> data1 = json.decode(s);
       if(data1['Reponse']=='Received'){
-        Navigator.of(context).pushReplacementNamed('Home1');
+        AwesomeDialog(
+          context: context,
+          dialogType: DialogType.SUCCES,
+          animType: AnimType.BOTTOMSLIDE,
+          title:'done' ,
+          desc: "done",
+          titleTextStyle: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w900,),
+          descTextStyle: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.w900,),
+          buttonsTextStyle:TextStyle(color: Colors.black,fontSize: 15),
+          btnOkText: 'Ok',
+          btnOkOnPress: () {},
+        )..show();
+
       }
       else{
         AwesomeDialog(
