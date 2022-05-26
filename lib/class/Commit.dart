@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-class  Commit{
+class  Committee{
   late int id;
   late String name;
   late String role;
 
 
-  Speaker(int id,String fields) {
+  Committee(int id,String fields) {
     var data2 = json.decode(fields);
     this.id = id;
     this.name = data2['name'];

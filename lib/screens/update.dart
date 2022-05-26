@@ -643,7 +643,9 @@ class ProfilupdateState extends State<Profilupdate> {
                               fontSize: 15,
                               fontWeight: FontWeight.bold),)
                     )
-                        : DropdownButton(
+                        :
+                    DropdownButton(
+
                       iconSize: 30,
                       icon: Icon(Icons.arrow_drop_up,),
                       alignment: Alignment.center,

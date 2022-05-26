@@ -79,7 +79,7 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
         //Or put here your next screen using Navigator.push() method
         AwesomeDialog(
           context: context,
-          dialogType: DialogType.WARNING,
+          dialogType: DialogType.SUCCES,
           animType: AnimType.BOTTOMSLIDE,
           title:'Welcome' ,
           desc: data1['IN SEAHF'],
