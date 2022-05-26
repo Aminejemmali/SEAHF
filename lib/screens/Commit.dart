@@ -102,27 +102,25 @@ class _MyAppStateSponsor extends State<Commit> {
   Future searchcommit() async{
     var request = http.MultipartRequest('POST', Uri.parse('https://seahfwebserver.herokuapp.com/controllerlien/GetAll_Committee_Conference'));
     request.fields.addAll({
-      'idSupporter': widget.id
+      'idConference': widget.id
     });
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       var s=await response.stream.bytesToString();
       Map<String, dynamic> data1 = json.decode(s);
       if(data1['Reponse']=='Success'){
-        // username = json.decode(data1['Name_Speaker']);
+
         List data2 = json.decode(data1['Committee']);
         if(mounted){
           setState(() {
-            if (listcommit.isEmpty)
-              {
-                isLoading=false;
-              }
-            var id = data2[0]['pk'];
-            var fields = json.encode(data2[0]['fields']);
-            Committee commit = new Committee(id, fields);
-            listcommit.add(commit);
-            isLoading = false;
-          });
+            var long=data2.length;
+            for(int i=0;i<long;i++) {
+              var id = data2[i]['pk'];
+              var fields = json.encode(data2[i]['fields']);
+              Committee commit = new Committee(id, fields);
+              listcommit.add(commit);
+              isLoading = false;
+            }});
         }
       }
       else{
@@ -178,6 +176,7 @@ class _MyAppStateSponsor extends State<Commit> {
                 Container(
                   margin: EdgeInsets.all(2.5),
                   child: FloatingActionButton(
+                    heroTag: "aa",
                     onPressed: () {
                       AwesomeDialog(
                         context: context,
@@ -211,6 +210,7 @@ class _MyAppStateSponsor extends State<Commit> {
                 Container(
                   margin: EdgeInsets.all(2.5),
                   child: FloatingActionButton(
+                    heroTag: "bb",
                     onPressed: () {
                       favorite();
                     },
@@ -285,7 +285,7 @@ class _MyAppStateSponsor extends State<Commit> {
                 ),
                 child:ListTile(
                   title: Text(listcommit[index].name,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                  subtitle: Text('Biography: ${listcommit[index].role}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                  subtitle: Text('Role: ${listcommit[index].role}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
 
 
                 ),
