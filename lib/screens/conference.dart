@@ -280,7 +280,6 @@ class search extends SearchDelegate {
       Map<String, dynamic> data1 = json.decode(s);
       if(data1['Reponse']=='Success'){
         List data2 = json.decode(data1['Conferences']);
-
           var longConferences =data2.length;
           for(int i=0;i<longConferences;i++) {
             var id = data2[i]['pk'];
@@ -320,22 +319,22 @@ class search extends SearchDelegate {
 
    List filtreliste= listConferences.where((element) => element.titleConference.contains(query) ).toList();
     return ListView.builder(
-        itemCount: query=="" ? 3:3,
-    itemBuilder :(context,i){
+        itemCount: query=="" ? listConferences.length:filtreliste.length,
+    itemBuilder :(context,index){
           return  Container(
             padding: EdgeInsets.all(10),
              child: query==""?
              ListTile(
-            title:Text( listConferences[i].titleConference ,
+            title:Text( listConferences[index].titleConference ,
              style: TextStyle(fontSize: 25),),
                  onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Details(id: (listConferences[i].id).toString(),)));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Details(id: (listConferences[index].id).toString(),)));
     },):
              ListTile(
-            title: Text( filtreliste[i].titleConference ,
+            title: Text( filtreliste[index].titleConference ,
                style: TextStyle(fontSize: 25),),
             onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Details(id: (filtreliste[i].id).toString(),)));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Details(id: (filtreliste[index].id).toString(),)));
             },));
     }) ;
   }
