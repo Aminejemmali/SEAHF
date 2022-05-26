@@ -51,10 +51,6 @@ class _HomeState extends State<Home> {
     Favorite(),
     Demande(),
     NotifPage(),
-
-
-
-
   ];
   clearshare() async{
     final prefs = await SharedPreferences.getInstance();
