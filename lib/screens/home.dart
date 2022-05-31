@@ -72,6 +72,7 @@ class _HomeState extends State<Home> {
          BottomNavigationBarItem(
            icon: Icon(Icons.home),
            label: 'Home',
+           backgroundColor:  Color.fromRGBO(28, 52, 128, 1.0)
 
          ),
          BottomNavigationBarItem(
@@ -113,7 +114,7 @@ class _HomeState extends State<Home> {
                 title: Text("Log out "),
                 leading: Icon(Icons.logout) ,
                 onTap:()  {
-                    getData();
+                    clearshare();
                   Navigator.pushReplacementNamed(context, 'Home');}),
           ],
         ),

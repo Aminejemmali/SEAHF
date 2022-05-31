@@ -137,11 +137,13 @@ class ProfilupdateState extends State<Profilupdate> {
     }
   }
 
-  deleteConference(int id) async {
+  deleteProfil() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? iduser = await prefs.getString('iduser');
     var request = http.MultipartRequest('POST', Uri.parse(
-        'https://seahfwebserver.herokuapp.com/controllerlien/Delete_Conference'));
+        'https://seahfwebserver.herokuapp.com/controllerlien/Delete_User'));
     request.fields.addAll({
-      'idConference': id.toString()
+      'idUser': iduser.toString()
     });
 
     http.StreamedResponse response = await request.send();
@@ -149,7 +151,7 @@ class ProfilupdateState extends State<Profilupdate> {
       var s = await response.stream.bytesToString();
       Map<String, dynamic> data1 = json.decode(s);
       if (data1['Reponse'] == 'Success') {
-        Navigator.of(context).pushReplacementNamed('ConferencesPage');
+        Navigator.pushReplacementNamed(context, 'Home');
       }
       else {
         AwesomeDialog(
@@ -294,7 +296,7 @@ class ProfilupdateState extends State<Profilupdate> {
     return Scaffold(
       appBar: AppBar(
         title: Text(listUsers.isEmpty?
-          "  ": listUsers[0].username,),
+          "  ":"Hi , ${listUsers[0].username}",),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(32, 189, 154, 1.0) ,
         leading: IconButton(onPressed: ()=>Navigator.of(context).pushReplacementNamed('Home1'), icon: Icon(Icons.arrow_back),iconSize: 30,),
@@ -385,7 +387,8 @@ class ProfilupdateState extends State<Profilupdate> {
                           fontWeight: FontWeight.w900,),
                         btnOkText: 'Yes',
                         btnOkOnPress: () {
-                          //deleteConference(listConferences[0].id);
+                          deleteProfil();
+
                         },
                         btnCancelText: 'Cancel',
                         btnCancelOnPress: () {},

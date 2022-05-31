@@ -319,7 +319,7 @@ class search extends SearchDelegate {
 
    List filtreliste= listConferences.where((element) => element.titleConference.contains(query) ).toList();
     return ListView.builder(
-        itemCount: query=="" ? 1:1,
+        itemCount: query=="" ? 6:filtreliste.length,
     itemBuilder :(context,index){
           return  Container(
             padding: EdgeInsets.all(10),
