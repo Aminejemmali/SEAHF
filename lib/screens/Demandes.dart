@@ -236,9 +236,12 @@ class _FavoriteState extends State<Demande> {
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [
-                      Color.fromRGBO(119,148,225, 0.7),
+                    colors: listReply[index]=="Accepted"?[
+                      Color.fromRGBO(167, 227, 92, 0.7019607843137254),
                       Color.fromRGBO(119,148,225, 1),
+                    ]:[
+                      Color.fromRGBO(241, 88, 94, 0.7019607843137254),
+                      Color.fromRGBO(229, 111, 172, 1.0),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(30),
@@ -255,7 +258,7 @@ class _FavoriteState extends State<Demande> {
                   trailing: IconButton(onPressed:(){deleteparticipation(index);}, icon: Icon(Icons.delete)),
                   leading:CircleAvatar( maxRadius: 50,child:listConferences[index].banner=='default_conference_banner.jpg'?Image.network("https://seahfwebserver.herokuapp.com/media/${listConferences[index].banner}",width: 100, fit: BoxFit.fill,):Image.network("https://seahfwebserver.herokuapp.com/media/banner/${listConferences[index].banner}",width: 100,fit: BoxFit.fill,),),
                   title: Text(listConferences[index].titleConference,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                  subtitle: Text('Reply:${listReply[index]}',style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),),
+                  subtitle: Text('Reply:${listReply[index]}',style: TextStyle(color: listReply[index]== "Accepted"? Colors.brown:Colors.black,fontWeight: FontWeight.bold),),
                   onTap: (){
                     if(listReply[index]=="Accepted"){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Payment(idconference: (this.listConferences[index].id).toString(), idparticipant: listId[index].toString())));}

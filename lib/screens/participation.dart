@@ -95,6 +95,8 @@ class _ParticipationState extends State<Participation> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(child: Text("Please set your role",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),),
+             SizedBox(height: 25,),
              Container(
                margin: EdgeInsets.all(10),
                padding: EdgeInsets.all(10),
