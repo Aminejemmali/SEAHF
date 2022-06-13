@@ -132,7 +132,7 @@ class _FavoriteState extends State<Favorite> {
           actions: [
 
           ],
-          title: Text('Favorite',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
+          title: Text('Favorites',style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
           centerTitle: true,
           backgroundColor: Color.fromRGBO(32, 189, 154, 1.0) ,
         ),

@@ -267,7 +267,7 @@ class ProfilupdateState extends State<Profilupdate> {
   }
 
   uploadImage() async {
-    final pickImage = await ImagePicker.pickImage(source: ImageSource.gallery , imageQuality: 80);
+    final pickImage = await ImagePicker.pickImage(source: ImageSource.camera , imageQuality: 80);
     if (pickImage != null) {
       setState(() {
         validateImage = true;
@@ -527,7 +527,7 @@ class ProfilupdateState extends State<Profilupdate> {
                       ],
                     ),
                     child: ListTile(
-                      title: Text('Address01:', style: TextStyle(
+                      title: Text('Address :', style: TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                           fontWeight: FontWeight.bold),),

@@ -121,7 +121,7 @@ class _MyHomePageState extends State<Auteur> {
                         ],
                       ),
                       child: Text(
-                          "please send lien from easychair ",
+                          "Please set your easychair link here ",
                       style:TextStyle(fontSize:25 ),),
                     ),
                     Container(
